@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content" >
+
+    <FrameLayout
+		android:layout_width="match_parent"
+		android:layout_height="50dp"
+		android:background="@drawable/skin_searchbar_bg" >
+    
+		<ImageView
+		    android:contentDescription="@string/app_name"
+			android:layout_width="match_parent"
+			android:layout_height="38dp"
+			android:layout_marginLeft="10dp"
+			android:layout_marginRight="10dp"
+			android:layout_marginTop="6dp"
+			android:layout_marginBottom="6dp"
+			android:gravity="center"
+			android:background="@drawable/skin_searchbar_input" />
+	
+		<Button
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:text="@string/search"
+			android:textColor="#ACACAC"
+			android:textSize="14sp"
+			android:drawableLeft="@drawable/skin_searchbar_icon"
+			android:background="@android:color/transparent" />
+		
+	</FrameLayout>
+	
+</LinearLayout>

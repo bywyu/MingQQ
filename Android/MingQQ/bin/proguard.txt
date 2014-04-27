@@ -1,0 +1,36 @@
+# view res/layout/activity_chat.xml #generated:116
+# view res/layout/activity_picviewer.xml #generated:6
+-keep class android.support.v4.view.ViewPager { <init>(...); }
+
+# view res/layout/fragment_contacts.xml #generated:61
+-keep class com.handmark.pulltorefresh.library.PullToRefreshExpandableListView { <init>(...); }
+
+# view res/layout/activity_chat.xml #generated:41
+# view res/layout/activity_group.xml #generated:44
+# view res/layout/fragment_msg.xml #generated:30
+-keep class com.handmark.pulltorefresh.library.PullToRefreshListView { <init>(...); }
+
+# view AndroidManifest.xml #generated:73
+-keep class com.zym.mingqq.QQService { <init>(...); }
+
+# view AndroidManifest.xml #generated:53
+-keep class com.zym.mingqq.ui.ChatActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:60
+-keep class com.zym.mingqq.ui.GroupActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:32
+-keep class com.zym.mingqq.ui.LoginActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:46
+-keep class com.zym.mingqq.ui.MainActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:66
+-keep class com.zym.mingqq.ui.PicViewerActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:20
+-keep class com.zym.mingqq.ui.SplashActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:39
+-keep class com.zym.mingqq.ui.VerifyCodeActivity { <init>(...); }
+

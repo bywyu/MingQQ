@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string-array name="NewsListItemTextArray">
+	    <item></item>
+        <item>好友动态</item>
+        <item></item>
+        <item>游戏</item>
+        <item>会员</item>
+        <item>阅读</item>
+        <item>应用宝</item>
+        <item>气泡、主题、表情</item>
+        <item></item>
+        <item>文件/照片助手</item>
+        <item>生活优惠</item>
+        <item>附近的人</item>
+        <item>扫一扫</item>
+        <item></item>
+        <item>腾讯新闻</item>
+        <item></item>
+    </string-array>
+    
+	<string-array name="SettingListItemTextArray">
+	    <item></item>
+        <item>好友昵称</item>
+        <item>我的资料</item>
+        <item>我的相册</item>
+        <item>QQ钱包</item>
+        <item>我的收藏</item>
+        <item></item>
+        <item>个性签名</item>
+        <item></item>
+        <item>消息通知</item>
+        <item>辅助功能</item>
+        <item>安全与隐私</item>
+        <item>设备锁</item>
+        <item></item>
+        <item>关于QQ</item>
+        <item></item>
+    </string-array>
+</resources>
