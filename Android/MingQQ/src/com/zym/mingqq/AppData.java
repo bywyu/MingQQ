@@ -23,6 +23,7 @@ public class AppData {
     private boolean m_bShowNotify;				// 是否显示通知
     private String m_strAppPath;
     private Handler m_hService;
+    private boolean m_bServiceInit;
     
     private AppData() {
     	m_QQClient = new QQClient();
@@ -123,5 +124,13 @@ public class AppData {
 		if (m_notifyMgr != null)
 			m_notifyMgr.cancel(nId);
 		m_bShowNotify = false;
+	}
+	
+	public boolean isQQServiceInit() {
+		return m_bServiceInit;
+	}
+	
+	public void setQQServiceInit(boolean bServiceInit) {
+		m_bServiceInit = bServiceInit;
 	}
 }

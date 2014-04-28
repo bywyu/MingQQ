@@ -10,14 +10,13 @@ import android.widget.Toast;
 import com.zym.mingqq.AppData;
 import com.zym.mingqq.LoginAccountInfo;
 import com.zym.mingqq.LoginAccountList;
+import com.zym.mingqq.QQService;
 import com.zym.mingqq.R;
 import com.zym.mingqq.qqclient.QQClient;
 import com.zym.mingqq.qqclient.protocol.protocoldata.QQCallBackMsg;
 import com.zym.mingqq.qqclient.protocol.protocoldata.QQLoginResultCode;
 
 public class SplashActivity extends Activity {
-	private static final String QQSERVICE_NAME = "com.zym.mingqq.QQService";
-	
 	private QQClient m_QQClient;
 	private LoginAccountList m_accountList;
 	
@@ -41,7 +40,7 @@ public class SplashActivity extends Activity {
 				Toast.makeText(getBaseContext(), 
 						R.string.qqservice_init_err, Toast.LENGTH_LONG).show();
 				m_QQClient.setNullCallBackHandler(m_Handler);
-				stopQQService();
+				QQService.stopQQService(SplashActivity.this);
 				finish();
 			}
 		}
@@ -82,7 +81,7 @@ public class SplashActivity extends Activity {
 
 		m_QQClient = AppData.getAppData().getQQClient();
 		m_accountList = AppData.getAppData().getLoginAccountList();
-		startQQService();	// 启动QQService
+		QQService.startQQService(this, m_hService);
 	}
 	
 	@Override
@@ -90,21 +89,7 @@ public class SplashActivity extends Activity {
         super.onDestroy();
         m_QQClient.setNullCallBackHandler(m_Handler);
     }
-	
-	// 启动QQService
-	private void startQQService() {
-		AppData.getAppData().setServiceHandler(m_hService);
 		
-		Intent intent = new Intent(QQSERVICE_NAME);
-		startService(intent);
-	}
-	
-	// 停止QQService
-	private void stopQQService() {
-		Intent intent = new Intent(QQSERVICE_NAME);
-		stopService(intent);
-	}
-	
 	private void showMainActivity(long delayMillis) {
 		Runnable runnable = new Runnable() {
 			@Override

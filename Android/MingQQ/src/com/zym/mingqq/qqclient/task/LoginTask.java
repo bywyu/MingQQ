@@ -14,6 +14,7 @@ import org.apache.http.client.HttpClient;
 //
 //import com.zym.mingqq.qqclient.QQManager;
 
+import com.zym.mingqq.Utils;
 import com.zym.mingqq.qqclient.protocol.QQProtocol;
 import com.zym.mingqq.qqclient.protocol.protocoldata.BuddyInfoResult;
 import com.zym.mingqq.qqclient.protocol.protocoldata.BuddyListResult;
@@ -69,8 +70,7 @@ public class LoginTask extends HttpTask {
 		try {
 			boolean bRet;
 			
-			if (m_QQUser.m_strVerifyCode == null 	// 验证码为空
-					|| m_QQUser.m_strVerifyCode.length() <= 0) {
+			if (Utils.isEmptyStr(m_QQUser.m_strVerifyCode)) {	// 验证码为空
 				bRet = QQProtocol.checkVerifyCode(m_httpClient,	// 检测是否需要输入验证码
 					m_QQUser.m_strQQNum, QQProtocol.WEBQQ_APP_ID, m_QQUser.m_VerifyCodeInfo);
 				if (!bRet || m_bCancel) {
@@ -105,10 +105,15 @@ public class LoginTask extends HttpTask {
 				m_QQUser.m_VerifyCodeInfo.m_bytPtUin,
 				QQProtocol.WEBQQ_APP_ID, m_QQUser.m_LoginResult1);
 			if (!bRet || m_bCancel) {
+				m_QQUser.m_strVerifyCode = null;
+				m_QQUser.m_VerifyCodePic = null;
 				sendLoginResultMsg(QQLoginResultCode.FAILED);
 				return;
 			}
 
+			m_QQUser.m_strVerifyCode = null;
+			m_QQUser.m_VerifyCodePic = null;
+			
 			if (m_QQUser.m_LoginResult1.m_nRetCode != 0) {		// 登录失败
 				if (m_QQUser.m_LoginResult1.m_nRetCode == 4) {	// 验证码错误
 					m_QQUser.m_VerifyCodePic = QQProtocol.getVerifyCodePic(m_httpClient,	// 获取验证码图片
@@ -172,8 +177,6 @@ public class LoginTask extends HttpTask {
 
 			bRet = startPollTask();					// 启动轮循消息任务
 
-			m_QQUser.m_strVerifyCode = null;
-			m_QQUser.m_VerifyCodePic = null;
 			m_QQUser.m_nStatus = m_QQUser.m_LoginResult2.m_nStatus;
 			sendLoginResultMsg(QQLoginResultCode.SUCCESS);
 

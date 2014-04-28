@@ -21,7 +21,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -86,6 +85,17 @@ public class SettingFragment extends Fragment
 			
 	}
 
+	private void showLoginActivity() {
+		getActivity().finish();
+		
+		Intent intent = new Intent(getActivity(), LoginActivity.class);
+		Bundle bundle = new Bundle();
+		bundle.putString("qq_num", m_QQClient.getQQNum());
+		bundle.putString("qq_pwd", m_QQClient.getQQPwd());
+		intent.putExtras(bundle);
+		startActivity(intent);
+	}
+	
 	@Override
 	public void onItemClick(AdapterView<?> parent, 
 			View view, int position, long id) {
@@ -128,15 +138,10 @@ public class SettingFragment extends Fragment
 	    	String strFileName = strAppPath + "LoginAccountList.dat"; 
 	    	accountList.saveFile(strFileName);
 
-			m_QQClient.logout();
-			getActivity().finish();
-			
-			Intent intent = new Intent(getActivity(), LoginActivity.class);
-			Bundle bundle = new Bundle();
-			bundle.putString("qq_num", m_QQClient.getQQNum());
-			bundle.putString("qq_pwd", m_QQClient.getQQPwd());
-			intent.putExtras(bundle);
-			startActivity(intent);
+			if (!m_QQClient.logout()) {
+				showLoginActivity();
+			}
+
 			break;
 		case AlertDialog.BUTTON_NEGATIVE:	// "取消"按钮
 			dialog.cancel();
@@ -159,6 +164,9 @@ public class SettingFragment extends Fragment
 			break;
 		case QQCallBackMsg.CHANGE_STATUS_RESULT:// 改变状态返回
 			m_ListAdapter.notifyDataSetChanged();
+			break;
+		case QQCallBackMsg.LOGOUT_RESULT:		// 注销返回
+			showLoginActivity();
 			break;
 		default:
 			break;

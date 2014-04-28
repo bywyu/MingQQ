@@ -121,16 +121,13 @@ public class ChatActivity extends Activity
 					return;
 				m_chatMsgAdapter.notifyDataSetChanged();
 				break;
-			case QQCallBackMsg.UPDATE_GROUP_NUMBER:	// 更新群号码
-				if (m_nType != IS_GROUP || msg.arg1 != m_nGroupCode)
-					return;
-				m_chatMsgAdapter.notifyDataSetChanged();
-				break;
 			case QQCallBackMsg.UPDATE_GMEMBER_NUMBER:// 更新群成员号码
-				if (m_nType != IS_SESS || 
-					msg.arg1 != m_nGroupCode || msg.arg2 != m_nQQUin)
-					return;
-				m_chatMsgAdapter.notifyDataSetChanged();
+				if (m_nType == IS_GROUP && msg.arg1 == m_nGroupCode) {
+					m_chatMsgAdapter.notifyDataSetChanged();	
+				} else if (m_nType == IS_SESS && 
+						msg.arg1 == m_nGroupCode && msg.arg2 == m_nQQUin) {
+					m_chatMsgAdapter.notifyDataSetChanged();
+				}
 				break;
 			case QQCallBackMsg.UPDATE_BUDDY_HEADPIC:// 更新好友头像
 				if (m_nType != IS_BUDDY || msg.arg1 != m_nQQUin)
@@ -138,10 +135,12 @@ public class ChatActivity extends Activity
 				m_chatMsgAdapter.notifyDataSetChanged();
 				break;
 			case QQCallBackMsg.UPDATE_GMEMBER_HEADPIC:// 更新群成员头像
-				if (m_nType != IS_SESS || 
-					msg.arg1 != m_nGroupCode || msg.arg2 != m_nQQUin)
-					return;
-				m_chatMsgAdapter.notifyDataSetChanged();
+				if (m_nType == IS_GROUP && msg.arg1 == m_nGroupCode) {
+					m_chatMsgAdapter.notifyDataSetChanged();	
+				} else if (m_nType == IS_SESS && 
+						msg.arg1 == m_nGroupCode && msg.arg2 == m_nQQUin) {
+					m_chatMsgAdapter.notifyDataSetChanged();
+				}
 				break;
 			case QQCallBackMsg.BUDDY_MSG: {			// 好友消息
 				if (m_nType != IS_BUDDY || msg.arg1 != m_nQQUin || null == msg.obj)

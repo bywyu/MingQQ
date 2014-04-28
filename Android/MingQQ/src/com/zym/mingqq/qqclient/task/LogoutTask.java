@@ -29,7 +29,7 @@ public class LogoutTask extends HttpTask {
 			if (!bRet || result.m_nRetCode != 0)
 				sendMessage(QQCallBackMsg.LOGOUT_RESULT, 0, 0, null);
 			else
-				sendMessage(QQCallBackMsg.LOGOUT_RESULT, 0, 1, null);
+				sendMessage(QQCallBackMsg.LOGOUT_RESULT, 1, 0, null);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

@@ -17,12 +17,15 @@ import com.zym.mingqq.qqclient.protocol.protocoldata.SessMessage;
 
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 
 public class QQService extends Service {
+	private static final String QQSERVICE_NAME = "com.zym.mingqq.QQService";
+	
 	private QQClient m_QQClient;
 	private LoginAccountList m_accountList;
 	private FaceList m_faceList;				// 表情列表
@@ -152,6 +155,7 @@ public class QQService extends Service {
         m_bInit = m_QQClient.init();
         if (!m_bInit)
         	m_QQClient.uninit();
+        AppData.getAppData().setQQServiceInit(m_bInit);
     }
   
     @Override  
@@ -173,8 +177,9 @@ public class QQService extends Service {
     @Override  
     public void onDestroy() {
     	m_QQClient.setProxyHandler(null);
-    			
         m_QQClient.uninit();
+        m_bInit = false;
+        AppData.getAppData().setQQServiceInit(false);
     }
     
 	// "/f["系统表情id"] /c["自定义表情文件名"] /o["字体名称，大小，颜色，加粗，倾斜，下划线"]"
@@ -204,5 +209,19 @@ public class QQService extends Service {
 		}
 
 		return strMsg;
+	}
+	
+	// 启动QQService
+	public static void startQQService(Context context, Handler handler) {
+		AppData.getAppData().setServiceHandler(handler);
+		
+		Intent intent = new Intent(QQSERVICE_NAME);
+		context.startService(intent);
+	}
+	
+	// 停止QQService
+	public static void stopQQService(Context context) {
+		Intent intent = new Intent(QQSERVICE_NAME);
+		context.stopService(intent);
 	}
 }

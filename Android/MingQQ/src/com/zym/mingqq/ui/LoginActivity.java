@@ -21,7 +21,9 @@ import android.widget.Toast;
 
 import com.zym.mingqq.AppData;
 import com.zym.mingqq.LoginAccountList;
+import com.zym.mingqq.QQService;
 import com.zym.mingqq.R;
+import com.zym.mingqq.Utils;
 import com.zym.mingqq.qqclient.QQClient;
 import com.zym.mingqq.qqclient.protocol.protocoldata.QQCallBackMsg;
 import com.zym.mingqq.qqclient.protocol.protocoldata.QQLoginResultCode;
@@ -38,6 +40,27 @@ public class LoginActivity extends Activity implements OnClickListener {
 	private Button m_btnLogin;
 	private Dialog m_dlgLogining;
 	private QQClient m_QQClient;
+	private String m_strQQNum, m_strQQPwd;
+
+	private Handler m_hService = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+			if (2 == msg.what) {		// 已经登录则直接进主窗口
+				
+			} else if (1 == msg.what) {	// 初始化成功
+				m_QQClient.setUser(m_strQQNum, m_strQQPwd);
+				m_QQClient.setLoginStatus(QQStatus.ONLINE);
+				m_QQClient.login();				
+			} else {					// 初始化失败
+				Toast.makeText(getBaseContext(), 
+						R.string.qqservice_init_err, Toast.LENGTH_LONG).show();
+				m_QQClient.setNullCallBackHandler(m_Handler);
+				QQService.stopQQService(LoginActivity.this);
+				finish();
+			}
+		}
+	};
 
 	private Handler m_Handler = new Handler() {
 		@Override
@@ -94,7 +117,7 @@ public class LoginActivity extends Activity implements OnClickListener {
             String strQQPwd = bundle.getString("qq_pwd");
             m_edtNum.setText(strQQNum);
             m_edtPwd.setText(strQQPwd);
-        }
+        }        
 	}
 
 	@Override
@@ -178,30 +201,28 @@ public class LoginActivity extends Activity implements OnClickListener {
 			break;
 			
 		case R.id.login_btnLogin:	// “登录”按钮
-			String strQQNum = m_edtNum.getText().toString();
-			String strQQPwd = m_edtPwd.getText().toString();
+			m_strQQNum = m_edtNum.getText().toString();
+			m_strQQPwd = m_edtPwd.getText().toString();
 			
-			if (null == strQQNum || strQQNum.length() <= 0) {
+			if (Utils.isEmptyStr(m_strQQNum)) {
 				Toast.makeText(getBaseContext(), 
 						R.string.enter_id, Toast.LENGTH_LONG).show();
 				return;
 			}
 			
-			if (null == strQQPwd || strQQPwd.length() <= 0) {
+			if (Utils.isEmptyStr(m_strQQPwd)) {
 				Toast.makeText(getBaseContext(), 
 						R.string.enter_pwd, Toast.LENGTH_LONG).show();
 				return;
 			}
 			
-			if (strQQNum.length() > 15) {
+			if (m_strQQNum.length() > 15) {
 				Toast.makeText(getBaseContext(), 
 						R.string.enter_id_toolong, Toast.LENGTH_LONG).show();
 				return;
 			}
-			
-			m_QQClient.setUser(strQQNum, strQQPwd);
-			m_QQClient.setLoginStatus(QQStatus.ONLINE);
-			m_QQClient.login();
+
+	        QQService.startQQService(this, m_hService);
 			
 			showLoginingDlg();
 			

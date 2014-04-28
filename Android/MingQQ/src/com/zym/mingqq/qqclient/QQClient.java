@@ -99,7 +99,7 @@ public class QQClient {
 				// 超时设置
 				// ConnManagerParams.setTimeout(params, 1000);
 				HttpConnectionParams.setConnectionTimeout(params, 5000);// 连接超时(单位：毫秒)
-				HttpConnectionParams.setSoTimeout(params, 10000);		// 读取超时(单位：毫秒)
+				HttpConnectionParams.setSoTimeout(params, 30*1000);		// 读取超时(单位：毫秒)
 
 				SchemeRegistry schReg = new SchemeRegistry();
 				schReg.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
@@ -113,7 +113,6 @@ public class QQClient {
 				// 使用线程安全的连接管理来创建HttpClient
 				ClientConnectionManager connectionMgr = new ThreadSafeClientConnManager(params, schReg);
 				m_httpClient = new DefaultHttpClient(connectionMgr, params);
-
 			} catch (KeyStoreException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -152,6 +151,14 @@ public class QQClient {
 //      由于以下HttpClient关闭连接代码需要在子线程调用，否则会报android.os.NetworkOnMainThreadException，所以这里不作释放了
 //		if (m_httpClient != null && m_httpClient.getConnectionManager() != null)
 //			m_httpClient.getConnectionManager().shutdown();
+		new Thread(){
+			@Override
+            public void run() {
+				if (m_httpClient != null && m_httpClient.getConnectionManager() != null)
+					m_httpClient.getConnectionManager().shutdown();
+				m_httpClient = null;
+            }
+        }.start();
 		m_QQUser.reset();
 	}
 
