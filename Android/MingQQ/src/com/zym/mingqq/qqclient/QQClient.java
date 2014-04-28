@@ -99,7 +99,7 @@ public class QQClient {
 				// 超时设置
 				// ConnManagerParams.setTimeout(params, 1000);
 				HttpConnectionParams.setConnectionTimeout(params, 5000);// 连接超时(单位：毫秒)
-				HttpConnectionParams.setSoTimeout(params, 30*1000);		// 读取超时(单位：毫秒)
+				//HttpConnectionParams.setSoTimeout(params, 30*1000);		// 读取超时(单位：毫秒)
 
 				SchemeRegistry schReg = new SchemeRegistry();
 				schReg.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
